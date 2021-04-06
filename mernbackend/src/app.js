@@ -31,6 +31,22 @@ app.get("/secret",auth, (req, res) => {
     res.render("secret");
 });
 
+app.get("/logout",auth, async (req, res) => {
+    try{
+        // for single logout
+        // req.data.tokens=req.data.tokens.filter((currentele)=>{
+        //     return currentele.token !== req.token;
+        // });
+        req.data.tokens=[];
+        res.clearCookie("jwt");
+        await req.data.save();
+        res.render('index');
+    }
+    catch(e){
+        res.status(500).send(e);
+    }
+});
+
 app.post("/login", async (req, res) => {
     try {
         const lemail = req.body.lemail;
